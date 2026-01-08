@@ -16,7 +16,7 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-accent: linear-gradient(135deg, #9fc7dd 0%, #1d526b 100%);
+  --gradient-accent: linear-gradient(135deg, #a1c8de 0%, #1d526b 100%);
   --gradient-subtle: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
   --border-radius: 12px;
   --border-radius-lg: 16px;
@@ -29,6 +29,7 @@ html {
   scroll-behavior: smooth;
 }
 
+
 body {
   font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-primary);
@@ -39,6 +40,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.robo-gradient {
+  background: linear-gradient(120deg, #22519d, #a1c8de);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
 
 /* Modern Button Styles */
 .button {
