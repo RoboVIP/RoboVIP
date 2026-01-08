@@ -399,18 +399,18 @@
 
 
     <!-- Teaser video-->
-    <!-- <section class="hero teaser">
+    <section class="hero teaser">
       <div class="container is-max-desktop">
         <div class="hero-body">
           <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata">
-            <source src="static/videos/bridge_ft_spoon_19_octo.mp4" type="video/mp4">
+            <source src="static/videos/real_traj/robovip/stitched.mp4" type="video/mp4">
           </video>
           <h2 class="subtitle has-text-centered">
-            To be changed (it's the main video)
+             Augmented Real-World Zero-Shot Robotics Manipulation Data by our RoboVIP
           </h2>
         </div>
       </div>
-    </section> -->
+    </section>
     <!-- End teaser video -->
 
 
@@ -423,10 +423,10 @@
           <h3>Contents</h3>
           <ul>
             <li><a href="#abstract">Abstract</a></li>
-            <li><a href="#vip">VIP: Visual Identity Prompting</a></li>
-            <li><a href="#realbot">Real-World Robot Section</a></li>
-            <li><a href="#videogen">Video Generation Section</a></li>
-            <li><a href="#rollout">Simulation Section</a></li>
+            <li><a href="#method">Methods</a></li>
+            <li><a href="#realbot">Real-World Robot Deployment Comparisons</a></li>
+            <li><a href="#videogen">Video Generation Results</a></li>
+            <li><a href="#rollout">Simulation Results</a></li>
             <li><a href="#BibTeX">BibTeX</a></li>
             <li><a href="#References">References</a></li>
           </ul>
@@ -468,7 +468,10 @@
                         <img src="static/images/teaser.svg" alt="Figure 1">
                       </figure>
                       <figcaption class="has-text-grey" style="margin-top: 0.75rem; font-size: 0.95rem;">
-                        <strong>Figure 1.</strong> main pipeline
+                        <strong>Main Pipeline</strong> 
+                        <br>(1) We extract observation videos from robotics manipulation data with corresponding action data to segment the robot arm and interacted objects for inpainting-based augmentation.
+                        <br>(2) A large pool of visual identity prompts is curated from robotics datasets and used as conditioning inputs for our multi-view video diffusion model to conduct diverse augmentation.
+                        <br>(3) The augmented videos, paired with action information from original robotics manipulation data, are utilized for downstream VLA and visuomotor policy training.
                       </figcaption>
                     </div>
                   </div>
@@ -481,14 +484,52 @@
 
 
           <!-- ================= VIP Section ================= -->
-<section id="vip" class="section">
+<section id="method" class="section">
   <div class="container is-max-desktop">
 
     <h2 class="title is-3 has-text-centered">
-      VIP: Visual Identity Prompting
+      Methods
     </h2>
 
-    <!-- ===== Intro Text ===== -->
+
+
+    <!-- ===== Segmentation Pipeline ===== -->
+    <div class="content has-text-justified" style="margin-bottom: 2.5rem;">
+      <p>
+            First, our segmentation pipeline conducts two parallel streams: one for robot-arm segmentation and one for interacted-object segmentation. 
+            We first use the gripper-action signal to identify accurate keyframe ranges, 
+            which is helpful to locate the interacted objects that are not visible in the first or last frame. 
+            We then leverage off-the-shelf models such as Cosmos-Reason1 and SAM2, 
+            together with several heuristic refinements, to obtain accurate masks in a fully plug-and-play manner.
+          </p>
+    </div>
+
+
+    <div class="columns is-centered" style="margin-bottom: 2.5rem;">
+      <div class="column is-10 has-text-centered">
+        <figure>
+          <img src="static/images/figure8.svg"
+               alt="Overview of Visual Identity Prompting">
+          <figcaption class="has-text-grey" style="margin-top: 0.75rem; font-size: 0.95rem;">
+            <!-- <strong>Segmentation pipeline</strong>  -->
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+
+
+
+
+    <br>
+    
+
+
+
+
+    <!-- Visual Identity Prompting Intro -->
+
+
     <div class="content has-text-justified" style="margin-bottom: 2.5rem;">
       <p>
         Existing data augmentation methods for robot manipulation typically rely on text prompts
@@ -497,91 +538,82 @@
         manipulation scenarios.
       </p>
       <p>
-        To address this limitation, we introduce <strong>Visual Identity Prompting (VIP)</strong>,
+        To address this limitation, we introduce <strong>Visual Identity Prompting (VIP)</strong> to the robotics manipulation data augmentation,
         a conditioning mechanism that augments text prompts with explicit visual exemplars.
         By providing reference images that encode object appearance, layout, and identity,
-        VIP enables more controllable, consistent, and temporally coherent video generation.
+        RoboVIP enables more controllable, consistent, and temporally coherent video generation.
       </p>
-    </div>
+      </div>    
 
-    <!-- ===== Figure 1: Overview ===== -->
-    <div class="columns is-centered" style="margin-bottom: 2.5rem;">
-      <div class="column is-10 has-text-centered">
-        <figure>
-          <img src="static/images/vip_overview.png"
-               alt="Overview of Visual Identity Prompting"
-               style="width: 100%;">
-          <figcaption class="has-text-grey" style="margin-top: 0.75rem; font-size: 0.95rem;">
-            <strong>Figure 1.</strong> Overview of Visual Identity Prompting (VIP).
-            Reference images are used as visual identity prompts to guide the video generation model,
-            ensuring consistent object appearance and scene structure across views and time.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
 
-    <div class="columns is-centered" style="margin-bottom: 2.5rem;">
-      <div class="column is-10 has-text-centered">
-        <figure>
-          <img src="static/images/figure8.svg"
-               alt="Overview of Visual Identity Prompting">
-          <figcaption class="has-text-grey" style="margin-top: 0.75rem; font-size: 0.95rem;">
-            <strong>Figure 2.</strong> Seg pipeline
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-
-    <!-- ===== Explanation Text ===== -->
-    <div class="content has-text-justified" style="margin-bottom: 2.5rem;">
-      <p>
-        Unlike text-only prompting, VIP directly conditions the generative model on visual cues.
-        These cues capture fine-grained properties such as object shape, material, color, and spatial
-        arrangement, which are difficult to describe exhaustively using natural language.
-      </p>
-      <p>
-        As a result, the generated videos better preserve object identities and maintain consistency
-        across multiple camera views and long temporal horizons, making them more suitable
-        for downstream robot policy learning.
-      </p>
-    </div>
-
-    <!-- ===== Figure 2: Comparison ===== -->
     <div class="columns is-vcentered" style="margin-top: 2.5rem;">
   
       <!-- 左：图 -->
-      <div class="column is-5">
+      <div class="column is-7">
         <figure>
           <img
             src="static/images/figure3.svg"
             alt="VLA Pipeline"
             class="figure-img"
-            style="width: 100%; height: auto;"
+            style="width: 150%; height: auto;"
           >
         </figure>
       </div>
     
       <!-- 右：文字说明 -->
-      <div class="column is-7">
+      <div class="column is-5">
         <div class="content">
           <p>
-            <strong>Figure 3.</strong> Comparison between text-only prompting and
-            <strong>Visual Identity Prompting (VIP)</strong>.
+            <strong>Visual Identity Curation Pipeline</strong>.
           </p>
           <p>
-            Compared to text-only prompts, VIP explicitly encodes visual identity
-            cues of target objects, enabling the video generation model to preserve
-            object appearance and spatial consistency across multiple views.
-          </p>
-          <p>
-            As shown in the examples, VIP significantly reduces identity drift and
-            view inconsistency, resulting in more accurate and stable multi-view
-            video generation.
+            Our visual identity is curated by panoptic segmentation from the large-scale robotics dataset (BridgeV1, BridgeV2, Droid), 
+            followed by Image Quality Assessment, Clip Text-Image Completness, Clarity Filter, and Resolution Filter to find high-quality identity images. 
+            <br>In augmentation stage, we randomly select variable number of identity images from the pool and pack them into one image frame to serve as conditioning for our video diffusion model.
           </p>
         </div>
       </div>
     
     </div>
+
+
+
+
+
+    <br>
+    <br>
+
+
+
+
+
+    <!-- Video Diffusion Model Part -->
+    <div class="content has-text-justified" style="margin-bottom: 2.5rem;">
+      <p>
+        Our RoboVIP video diffusion model is conditioned on the segmented multi-view video sequence, 
+        structured text prompt, and visual identity prompting to achieve consistent visual augmentation.
+      </p>
+    </div>
+
+
+
+    <div class="columns is-centered" style="margin-bottom: 2.5rem;">
+      <div class="column is-10 has-text-centered">
+        <figure>
+          <img src="static/images/VDM_svg.svg"
+               alt="RoboVIP Video Diffusion Model Architecture">
+          <figcaption class="has-text-grey" style="margin-top: 0.75rem; font-size: 0.95rem;">
+            <!-- <strong>VDM</strong>  -->
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+
+
+
+
+
 
   </div>
 </section>
@@ -595,7 +627,7 @@
 
                 <!-- =============== GLOBAL SECTION TITLE =============== -->
                 <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">
-                  Real-World Robot Section
+                  Real-World Robot Deployment Comparisons
                 </h2>
 
 
@@ -717,11 +749,11 @@
                 <div class="container is-max-desktop has-text-centered">
 
                   <!-- Main Title -->
-                  <h2 class="title is-3">Video Generation Section</h2>
+                  <h2 class="title is-3">Video Generation Results</h2>
 
                   <!-- Source Videos -->
                   <h3 class="title is-4 section-divider" style="margin-top: 3rem;">
-                    <strong>Droid Augmented by Our RoboVIP</strong>
+                    <strong>Droid Augmentation Comparisons</strong>
                   </h3>
 
                   <!-- 四列标题 -->
@@ -736,7 +768,7 @@
                       <h3 class="method-header"><strong>RoboEngine</strong></h3>
                     </div>
                     <div class="column">
-                      <h3 class="method-header"><strong>Our RoboVIP</strong></h3>
+                      <h3 class="method-header"><p class="video-caption" style="color:#22519d;"><strong>RoboVIP (Ours)</strong></p></h3>
                     </div>
                   </div>
 
@@ -955,7 +987,7 @@
           <section id="rollout" class="section">
             <div class="container is-max-desktop">
 
-              <h2 class="title is-3 has-text-centered">Simulation Section</h2>
+              <h2 class="title is-3 has-text-centered">Simulation Results</h2>
 
               <!-- ================= Pi0 Section ================= -->
               <h3 class="title is-4 section-divider has-text-centered" style="margin-top: 3rem;"><strong>Pi0 Roll-out
@@ -1111,13 +1143,15 @@
                   <span class="copy-text">Copy</span>
                 </button>
               </div>
-              <pre id="bibtex-code"><code>@article{YourPaperKey2024,
+              <pre id="bibtex-code">
+<code>@article{YourPaperKey2024,
   title={Your Paper Title Here},
   author={First Author and Second Author and Third Author},
   journal={Conference/Journal Name},
   year={2024},
   url={https://your-domain.com/your-project-page}
-}</code></pre>
+}</code>
+            </pre>
             </div>
           </section>
           <!--End BibTex citation -->
@@ -1127,10 +1161,11 @@
             <div class="container is-max-desktop content references-box">
               <h2 class="title">References</h2>
               <ol class="references-list">
-                <li>Gu et al. “Diffusion as Shader”. SIGGRAPH 2025.</li>
-                <li>Google DeepMind. “Veo”. 2024.</li>
-                <li>Wu et al. “DragAnything”. ECCV 2024.</li>
-                <li>Li et al. “Puppet-master”. ICCV 2025.</li>
+                <li>Yuan, Chengbo, et al. "RoboEngine: Plug-and-Play Robot Data Augmentation with Semantic Robot Segmentation and Background Generation." arXiv preprint arXiv:2503.18738 (2025).</li>
+                <li>Ali, Arslan, et al. "World simulation with video foundation models for physical ai." arXiv preprint arXiv:2511.00062 (2025).</li>
+                <li>Chi, Cheng, et al. "Diffusion policy: Visuomotor policy learning via action diffusion." The International Journal of Robotics Research 44.10-11 (2025): 1684-1704.</li>
+                <li>Team, Octo Model, et al. "Octo: An open-source generalist robot policy." arXiv preprint arXiv:2405.12213 (2024).</li>
+                <li>Black, Kevin, et al. "$\pi_0 $: A Vision-Language-Action Flow Model for General Robot Control." arXiv preprint arXiv:2410.24164 (2024).</lili>
               </ol>
             </div>
           </section>
