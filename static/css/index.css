@@ -1103,3 +1103,14 @@ pre, code {
   width: 50%;
   height: auto;
 }
+
+.visitor-map {
+  max-width: 320px;     
+  margin: 40px auto 0; 
+  opacity: 0.9;        
+}
+
+.visitor-map iframe {
+  width: 100% !important;
+  height: auto !important;
+}
