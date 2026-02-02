@@ -1105,12 +1105,80 @@ pre, code {
 }
 
 .visitor-map {
-  max-width: 320px;     
-  margin: 40px auto 0; 
-  opacity: 0.9;        
+  max-width: 320px;
+  margin: 40px auto 0;
+  opacity: 0.9;
 }
 
 .visitor-map iframe {
   width: 100% !important;
   height: auto !important;
+}
+
+/* ===== TL;DR Section ===== */
+.tldr-section {
+  padding: 1.5rem 1.5rem 2rem;
+}
+
+.tldr-section .title {
+  font-size: 1.8rem !important;
+  letter-spacing: 0.05em;
+  color: #22519d;
+  margin-bottom: 1.5rem !important;
+  font-weight: 700;
+  font-family: 'Google Sans', sans-serif !important;
+}
+
+.tldr-main {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #1e293b;
+  font-weight: 500;
+  margin-bottom: 1rem !important;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.tldr-sub {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #1e293b;
+  margin-bottom: 0 !important;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.tldr-sub .tldr-robovip {
+  font-size: 1.4rem !important;
+  font-weight: 700;
+  font-family: 'Google Sans', sans-serif !important;
+  letter-spacing: 0.02em;
+  background: linear-gradient(120deg, #22519d, #a1c8de);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tldr-sub strong {
+  color: #22519d;
+}
+
+/* Mobile responsive for TL;DR */
+@media screen and (max-width: 768px) {
+  .tldr-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .tldr-section .title {
+    font-size: 1rem !important;
+    letter-spacing: 0.1em;
+  }
+
+  .tldr-main {
+    font-size: 1rem;
+  }
+
+  .tldr-sub {
+    font-size: 0.9rem;
+  }
 }
